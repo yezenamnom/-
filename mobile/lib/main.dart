@@ -30,6 +30,7 @@ import 'data/bookmarks_repository.dart';
 import 'data/database.dart';
 import 'data/history_repository.dart';
 import 'data/key_value_store.dart';
+import 'data/secret_store.dart';
 import 'data/settings_controller.dart';
 import 'data/shortcuts_repository.dart';
 import 'data/site_permissions_repository.dart';
@@ -82,6 +83,7 @@ Future<void> main() async {
 
   final subscription = SubscriptionService(
     store: prefs,
+    secrets: const SecureSecretStore(),
     verifier: verifier,
     baseUrl: AppEnv.configBaseUrl,
     productIds: const [
@@ -103,6 +105,7 @@ Future<void> main() async {
   final tabsRepo = TabsRepository(db.db);
   final tabs = TabsController(
     repository: settings.restoreTabs ? tabsRepo : null,
+    desktopModeDefault: () => settings.desktopModeDefault,
     onFreeze: (tab) {
       final k = tab.keepAlive;
       if (k != null) InAppWebViewController.disposeKeepAlive(k);

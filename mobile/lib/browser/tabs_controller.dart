@@ -32,6 +32,7 @@ class TabsController extends ChangeNotifier {
     this.maxLiveWebViews = 5,
     this.onFreeze,
     this.onPrivateSessionEnded,
+    this.desktopModeDefault,
   })  : _repo = repository,
         _clock = clock ?? DateTime.now;
 
@@ -45,6 +46,9 @@ class TabsController extends ChangeNotifier {
   /// Called after the last private tab was closed, with the closed tabs, so
   /// the platform layer can destroy the isolated private data store.
   final Future<void> Function(List<BrowserTab> closed)? onPrivateSessionEnded;
+
+  /// User preference "request desktop sites by default" for new tabs.
+  final bool Function()? desktopModeDefault;
 
   final List<BrowserTab> _tabs = [];
   String? _currentId;
@@ -97,7 +101,9 @@ class TabsController extends ChangeNotifier {
       isPrivate: private,
       url: url,
       lastActive: _clock(),
-    )..pendingLoad = url;
+    )
+      ..pendingLoad = url
+      ..desktopMode = desktopModeDefault?.call() ?? false;
     final cur = current;
     final insertAt = cur == null ? _tabs.length : _tabs.indexOf(cur) + 1;
     _tabs.insert(insertAt, tab);

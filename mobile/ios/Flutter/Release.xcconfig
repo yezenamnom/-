@@ -1,1 +1,8 @@
+#include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
 #include "Generated.xcconfig"
+
+// AdMob App ID. Defaults to Google's sample iOS App ID
+// (https://developers.google.com/admob/ios/test-ads). Production IDs go in
+// Flutter/Local.xcconfig (git-ignored), never in this file.
+ADMOB_APP_ID_IOS = ca-app-pub-3940256099942544~1458002511
+#include? "Local.xcconfig"

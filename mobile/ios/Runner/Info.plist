@@ -2,12 +2,39 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>ar</string>
+		<string>de</string>
+	</array>
+	<key>GADApplicationIdentifier</key>
+	<string>$(ADMOB_APP_ID_IOS)</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Your choice only affects whether ads inside this app may be personalised. Browsing works the same either way.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>A website you are visiting asked to use the camera. It is only used after you allow it for that site.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>A website you are visiting asked to use the microphone. It is only used after you allow it for that site.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>A website you are visiting asked for your location. It is only shared after you allow it for that site.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
+	<key>SKAdNetworkItems</key>
+	<array>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>cstr6suwn9.skadnetwork</string>
+		</dict>
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Vela Browser</string>
+	<string>Vela</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +42,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>vela_browser</string>
+	<string>Vela</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

@@ -77,6 +77,35 @@ on every request. Client IP = right-most `X-Forwarded-For` entry (see README: ru
 
 ---
 
+### `POST /api/v1/entitlements/verify`
+
+Verifies a "remove app ads" subscription with the store and returns a signed, short-lived entitlement.
+Nothing about the user or purchase is stored.
+
+Request (`application/json`, ≤ 32 KB):
+
+```json
+{ "platform": "android|ios", "productId": "remove_ads_monthly", "verificationData": "<Play purchase token | StoreKit 2 JWS transaction>", "source": "google_play|app_store" }
+```
+
+- Android: `verificationData` is the Play purchase token; checked with `purchases.subscriptionsv2.get` using the service account.
+- iOS: `verificationData` is the StoreKit 2 signed transaction (JWS); its x5c chain must end in Apple Root CA - G3
+  (pinned SHA-256), every certificate must be valid and signed by the next, and the ES256 signature must verify.
+  `bundleId`, `productId`, `type` and `environment` (Sandbox only outside production) are checked.
+
+Response `200`: an envelope in the same format and key as `/config`, whose payload is
+
+```json
+{ "type": "ad_free_entitlement", "platform": "android", "productId": "remove_ads_monthly",
+  "status": "active|grace|canceled|expired|revoked|pending", "issuedAt": "ISO", "expiresAt": "ISO" }
+```
+
+`expiresAt` = min(store expiry, now + 7 days), so the app re-verifies at least weekly and cancellations/refunds propagate.
+The app grants ad-free only for `active|grace|canceled` with `expiresAt` in the future.
+
+Errors: `400 unknown_product | invalid_purchase | product_mismatch | environment_mismatch | validation_failed`,
+`501 not_configured` (store credentials missing), `503 store_unavailable | signing_key_unavailable`.
+
 ## Admin API — `/api/admin` (session required)
 
 **Auth model** (enforced server-side in `src/lib/admin-route.ts` for every route):
