@@ -19,7 +19,7 @@
   "autoPipHint": "Wenn ein Video im Vollbild läuft und Sie die App verlassen",
   "back": "Zurück",
   "backgroundAudio": "Audio im Hintergrund weiterspielen",
-  "backgroundAudioHint": "Nur wo System und Website es erlauben. Manche Seiten pausieren selbst.",
+  "backgroundAudioHint": "Nur wo System und Nutzungsbedingungen der Website es erlauben (nicht bei YouTube, dort ist Hintergrundwiedergabe eine Premium-Funktion). Manche Seiten pausieren selbst.",
   "blockAdsTrackers": "Werbung & Tracker auf Websites blockieren",
   "blockAdsTrackersHint": "Wirkt nur in diesem Browser. Die Abdeckung unterscheidet sich zwischen Android und iOS; manche Seiten können fehlerhaft sein.",
   "blockOnThisSite": "Blockieren auf dieser Seite",

@@ -217,7 +217,7 @@ abstract class AppLocalizations {
   /// No description provided for @backgroundAudioHint.
   ///
   /// In en, this message translates to:
-  /// **'Only where the system and the website allow it. Some sites pause playback themselves.'**
+  /// **'Only where the system and the website\'s terms allow it (not on YouTube, where background play is a Premium feature). Some sites pause playback themselves.'**
   String get backgroundAudioHint;
 
   /// No description provided for @blockAdsTrackers.

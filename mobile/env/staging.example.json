@@ -1,0 +1,7 @@
+{
+  "APP_ENV": "staging",
+  "CONFIG_BASE_URL": "https://staging-admin.example.com",
+  "CONFIG_PUBLIC_KEY": "<staging public key>",
+  "SUB_PRODUCT_MONTHLY": "remove_ads_monthly",
+  "SUB_PRODUCT_YEARLY": "remove_ads_yearly"
+}

@@ -94,6 +94,8 @@ class _BannerSlotState extends ConsumerState<BannerSlot> {
             height: ad.size.height.toDouble(),
             child: AdWidget(ad: ad),
           ),
+          // Keep distance from navigation buttons to avoid accidental clicks.
+          const SizedBox(height: 12),
         ]),
       );
     });

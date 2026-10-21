@@ -1,0 +1,7 @@
+{
+  "name": "vela-smoke",
+  "private": true,
+  "description": "Real-site smoke test of the blocklist in mobile-emulated Chromium (NOT the app's WebView).",
+  "scripts": { "smoke": "node blocklist-smoke.mjs" },
+  "devDependencies": { "playwright-core": "1.56.1" }
+}

@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blocking</title><link rel="stylesheet" href="common.css"></head><body>
+<h1>Content blocking</h1>
+<p>Requests to well-known ad/tracker hosts. With blocking ON they should fail; with the site excepted (or blocking OFF) they load.
+Needs internet. Results depend on the list version; record which one.</p>
+<pre id="out"></pre>
+<h2>Cosmetic rules</h2>
+<div class="adsbygoogle" id="cos1" style="background:#fdd;padding:8px">.adsbygoogle box (should be hidden)</div>
+<div id="div-gpt-ad-123" style="background:#fdd;padding:8px">#div-gpt-ad-* box (should be hidden)</div>
+<div class="normal-content" style="background:#dfd;padding:8px">Normal content (must stay visible)</div>
+<script>
+const tests = [
+  ['script', 'https://securepubads.g.doubleclick.net/tag/js/gpt.js'],
+  ['script', 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'],
+  ['image', 'https://www.google-analytics.com/__vela_probe.gif'],
+  ['script', 'https://cdn.taboola.com/libtrc/loader.js'],
+  ['image', 'https://sb.scorecardresearch.com/p?c1=2'],
+  ['control (should load)', 'https://www.example.com/'],
+];
+const out = document.getElementById('out');
+for (const [kind, url] of tests) {
+  fetch(url, {mode: 'no-cors', cache: 'no-store'})
+    .then(() => out.textContent += 'LOADED   ' + kind + ' ' + url + '\n')
+    .catch(() => out.textContent += 'BLOCKED  ' + kind + ' ' + url + '\n');
+}
+setTimeout(() => {
+  for (const id of ['cos1', 'div-gpt-ad-123']) {
+    const hidden = getComputedStyle(document.getElementById(id)).display === 'none';
+    out.textContent += 'cosmetic ' + id + ': ' + (hidden ? 'hidden' : 'VISIBLE') + '\n';
+  }
+}, 1500);
+</script></body></html>

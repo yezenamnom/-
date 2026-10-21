@@ -19,7 +19,7 @@
   "autoPipHint": "When a video is fullscreen and you leave the app",
   "back": "Back",
   "backgroundAudio": "Keep audio playing in background",
-  "backgroundAudioHint": "Only where the system and the website allow it. Some sites pause playback themselves.",
+  "backgroundAudioHint": "Only where the system and the website's terms allow it (not on YouTube, where background play is a Premium feature). Some sites pause playback themselves.",
   "blockAdsTrackers": "Block ads & trackers on websites",
   "blockAdsTrackersHint": "Works only inside this browser. Coverage differs between Android and iOS and some sites may break.",
   "blockOnThisSite": "Blocking on this site",

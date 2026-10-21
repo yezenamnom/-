@@ -9,3 +9,6 @@
 *.mobileprovision
 mobile/env/*.json
 !mobile/env/*.example.json
+node_modules/
+tools/smoke/smoke-results.json
+mobile/test_screenshots/out/

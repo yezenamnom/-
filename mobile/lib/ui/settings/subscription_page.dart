@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../app_providers.dart';
 import '../../billing/subscription_service.dart';
@@ -17,6 +18,7 @@ class SubscriptionPage extends ConsumerWidget {
     final sub = ref.watch(subscriptionProvider);
     final ent = sub.entitlement;
     final locale = Localizations.localeOf(context).toLanguageTag();
+    final content = ref.watch(configProvider).config.content;
 
     return Scaffold(
       appBar: AppBar(title: Text(l.removeAds)),
@@ -67,6 +69,20 @@ class SubscriptionPage extends ConsumerWidget {
         const SizedBox(height: 16),
         Text(l.subscriptionManageHint,
             style: Theme.of(context).textTheme.bodySmall),
+        // Store rules: terms and privacy must be reachable from the
+        // purchase screen itself.
+        Wrap(spacing: 8, children: [
+          for (final (label, url) in [
+            (l.terms, content.termsUrl),
+            (l.privacyPolicy, content.privacyUrl),
+          ])
+            if (url != null)
+              TextButton(
+                onPressed: () => launchUrl(Uri.parse(url),
+                    mode: LaunchMode.externalApplication),
+                child: Text(label),
+              ),
+        ]),
       ]),
     );
   }

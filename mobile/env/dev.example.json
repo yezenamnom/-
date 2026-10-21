@@ -1,0 +1,7 @@
+{
+  "APP_ENV": "dev",
+  "CONFIG_BASE_URL": "http://10.0.2.2:3000",
+  "CONFIG_PUBLIC_KEY": "<raw Ed25519 public key, base64url, printed by `npm run keys:generate` in admin/>",
+  "SUB_PRODUCT_MONTHLY": "",
+  "SUB_PRODUCT_YEARLY": ""
+}

@@ -69,7 +69,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get backgroundAudioHint =>
-      'فقط حيث يسمح النظام والموقع. بعض المواقع توقف التشغيل بنفسها.';
+      'فقط حيث يسمح النظام وشروط الموقع (ليس على يوتيوب حيث التشغيل بالخلفية ميزة مدفوعة). بعض المواقع توقف التشغيل بنفسها.';
 
   @override
   String get blockAdsTrackers => 'حجب الإعلانات والمتتبعات في المواقع';

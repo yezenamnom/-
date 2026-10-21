@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pop-ups</title><link rel="stylesheet" href="common.css"></head><body>
+<h1>Pop-ups &amp; new windows</h1>
+<p>Expected with "Block pop-ups" on: the automatic pop-up (fired 1s after load) is blocked; user-initiated ones open a new tab.</p>
+<a class="btn" href="index.html" target="_blank">target=_blank link</a>
+<button onclick="window.open('index.html')">window.open on click</button>
+<button onclick="openAndPost()">window.open + opener message</button>
+<pre id="out"></pre>
+<script>
+const out = document.getElementById('out');
+setTimeout(() => {
+  const w = window.open('index.html');
+  out.textContent += 'auto pop-up result: ' + (w ? 'OPENED (should be blocked)' : 'blocked') + '\n';
+}, 1000);
+function openAndPost(){
+  const w = window.open('opener-child.html');
+  out.textContent += 'child window: ' + (w ? 'opened' : 'null') + '\n';
+}
+window.addEventListener('message', e => out.textContent += 'message from child: ' + e.data + '\n');
+</script></body></html>

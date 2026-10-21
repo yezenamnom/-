@@ -1,0 +1,7 @@
+{
+  "APP_ENV": "production",
+  "CONFIG_BASE_URL": "https://admin.example.com",
+  "CONFIG_PUBLIC_KEY": "<production public key>",
+  "SUB_PRODUCT_MONTHLY": "remove_ads_monthly",
+  "SUB_PRODUCT_YEARLY": "remove_ads_yearly"
+}

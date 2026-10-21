@@ -94,6 +94,6 @@ export async function seedPublishable() {
 
 export function useSigningKey() {
   const kp = generateSigningKeyPair();
-  process.env.CONFIG_SIGNING_PRIVATE_KEY = kp.privateKeyPkcs8B64;
+  process.env.CONFIG_SIGNING_PRIVATE_KEY = kp.privateKeyPkcs8B64; // gitleaks:allow (generated per test run)
   return kp;
 }

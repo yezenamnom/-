@@ -1,0 +1,4 @@
+body{font-family:system-ui,sans-serif;max-width:720px;margin:0 auto;padding:16px;line-height:1.5}
+h1{font-size:1.4rem} .ok{color:#1b7f3b;font-weight:bold} .bad{color:#b3261e;font-weight:bold}
+button,a.btn{display:inline-block;margin:4px 4px 4px 0;padding:10px 14px;border-radius:8px;border:1px solid #888;background:#f2f2f2;color:#000;text-decoration:none}
+pre{background:#f4f4f4;padding:8px;white-space:pre-wrap;word-break:break-all}

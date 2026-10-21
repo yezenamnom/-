@@ -17,6 +17,7 @@ import '../../core/url_safety.dart';
 import '../../data/settings_controller.dart';
 import '../../data/site_permissions_repository.dart';
 import '../../downloads/downloads_service.dart';
+import '../../media/media_policy.dart';
 import '../../l10n/l10n.dart';
 import 'browser_actions.dart';
 
@@ -486,7 +487,8 @@ Future<void> applyLifecycle(
 }) async {
   final c = tab?.controller;
   if (c == null) return;
-  if (state == AppLifecycleState.paused && !backgroundAudio) {
+  final keepPlaying = backgroundAudio && backgroundPlaybackAllowed(tab?.url);
+  if (state == AppLifecycleState.paused && !keepPlaying) {
     if (Platform.isAndroid) {
       await c.pause();
     } else {

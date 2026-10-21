@@ -79,10 +79,12 @@ class DownloadsPage extends ConsumerWidget {
                   },
                 ),
         ),
-        const SafeArea(
-          top: false,
-          child: BannerSlot(placement: AdPlacementId.downloadsBanner),
-        ),
+        // No ad on an empty screen (AdMob: ads need publisher content).
+        if (items.isNotEmpty)
+          const SafeArea(
+            top: false,
+            child: BannerSlot(placement: AdPlacementId.downloadsBanner),
+          ),
       ]),
     );
   }

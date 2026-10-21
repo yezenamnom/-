@@ -1,0 +1,23 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Permissions</title><link rel="stylesheet" href="common.css"></head><body>
+<h1>Permissions</h1>
+<p>Each button must trigger the browser's per-site prompt (allow once / always / block), then the OS prompt.
+Nothing is granted without asking. Note: camera/mic/location need a secure context (https or localhost).</p>
+<button onclick="cam({video:true})">Camera</button>
+<button onclick="cam({audio:true})">Microphone</button>
+<button onclick="cam({video:true,audio:true})">Both</button>
+<button onclick="geo()">Location</button>
+<video id="pv" autoplay playsinline muted width="240"></video>
+<pre id="out"></pre>
+<script>
+const out = document.getElementById('out');
+function log(s){ out.textContent += s + '\n'; }
+async function cam(c){
+  try { const s = await navigator.mediaDevices.getUserMedia(c); document.getElementById('pv').srcObject = s; log('granted ' + JSON.stringify(c)); }
+  catch(e){ log('denied ' + JSON.stringify(c) + ': ' + e.name); }
+}
+function geo(){
+  navigator.geolocation.getCurrentPosition(p => log('location ok (accuracy ' + Math.round(p.coords.accuracy) + ' m)'),
+    e => log('location denied: ' + e.message));
+}
+</script></body></html>

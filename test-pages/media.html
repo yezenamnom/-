@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Media</title><link rel="stylesheet" href="common.css"></head><body>
+<h1>Video &amp; audio</h1>
+<p>Media files are generated test patterns/tones (no third-party content). Check: inline play, fullscreen + rotation,
+PiP (Android: leave the app while fullscreen; iOS: PiP button in the native player), background audio (lock the screen),
+and that switching to another tab playing audio behaves sensibly.</p>
+<video id="v" src="media/test-video.mp4" controls playsinline width="100%"></video>
+<p><button onclick="v.requestFullscreen && v.requestFullscreen()">requestFullscreen()</button>
+<button onclick="v.requestPictureInPicture ? v.requestPictureInPicture().catch(e=>log('PiP API: '+e.name)) : log('PiP API not available')">requestPictureInPicture()</button></p>
+<audio id="a" src="media/test-audio.m4a" controls></audio>
+<pre id="out"></pre>
+<script>
+const out = document.getElementById('out');
+function log(s){ out.textContent += new Date().toLocaleTimeString() + ' ' + s + '\n'; }
+for (const el of [v, a]) for (const ev of ['play','pause','ended']) el.addEventListener(ev, () => log(el.tagName + ' ' + ev));
+document.addEventListener('visibilitychange', () => log('visibility: ' + document.visibilityState));
+if ('mediaSession' in navigator) {
+  navigator.mediaSession.metadata = new MediaMetadata({title: 'Vela test tone', artist: 'Vela'});
+  log('mediaSession API present');
+} else log('mediaSession API absent');
+</script></body></html>

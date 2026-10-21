@@ -73,20 +73,31 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
                 decoration: InputDecoration(hintText: l.searchTabs),
                 onChanged: (v) => setState(() => _query = v),
               )
-            : SegmentedButton<bool>(
+            : Text(l.tabs),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(56),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: SizedBox(
+              width: double.infinity,
+              child: SegmentedButton<bool>(
                 segments: [
                   ButtonSegment(
                       value: false,
+                      icon: const Icon(Icons.tab_outlined, size: 18),
                       label: Text('${l.tabs} (${tabsCtl.normalTabs.length})')),
                   ButtonSegment(
                       value: true,
                       icon: const Icon(Icons.privacy_tip_outlined, size: 18),
-                      label: Text('${tabsCtl.privateTabs.length}',
-                          semanticsLabel: l.privateTabs)),
+                      label: Text(
+                          '${l.privateTab} (${tabsCtl.privateTabs.length})')),
                 ],
                 selected: {_private},
                 onSelectionChanged: (s) => setState(() => _private = s.first),
               ),
+            ),
+          ),
+        ),
         actions: [
           IconButton(
             tooltip: _searching ? l.close : l.searchTabs,

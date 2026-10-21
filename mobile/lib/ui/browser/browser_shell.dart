@@ -12,6 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../app_providers.dart';
 import '../../browser/browser_tab.dart';
 import '../../l10n/l10n.dart';
+import '../../media/media_policy.dart';
 import '../home/home_page.dart';
 import '../tabs/tabs_screen.dart';
 import '../theme.dart';
@@ -70,7 +71,10 @@ class _BrowserShellState extends ConsumerState<BrowserShell>
     setState(() => _fullscreen = value);
     unawaited(setImmersive(value));
     final pip = ref.read(pipProvider);
-    unawaited(pip.setAuto(value && ref.read(settingsProvider).autoPip));
+    final url = ref.read(tabsProvider).current?.url;
+    unawaited(pip.setAuto(value &&
+        ref.read(settingsProvider).autoPip &&
+        backgroundPlaybackAllowed(url)));
   }
 
   Future<void> _openTabs() async {

@@ -1,0 +1,13 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Downloads</title><link rel="stylesheet" href="common.css"></head><body>
+<h1>Downloads</h1>
+<p>Run <code>python3 serve.py</code> (these endpoints are dynamic). Check results in the app's Files screen.</p>
+<a class="btn" href="/download/attachment">Content-Disposition PDF</a>
+<a class="btn" href="/download/attachment?name=../../evil.apk">Malicious name (../../evil.apk)</a>
+<a class="btn" href="/download/attachment?name=%E2%80%AEfdp.exe">RTL override name</a>
+<a class="btn" href="/download/big">50 MB (progress + cancel)</a>
+<a class="btn" href="media/test-audio.m4a" download>download attribute (audio)</a>
+<p>Cookie-protected download: first open <a href="cookies.html">cookies.html</a> and press "Set NORMAL", then:
+<a class="btn" href="/download/needs-cookie">Needs cookie</a> (normal tab: "cookie ok"; private tab: 403 expected).</p>
+<p>Expected: files saved with safe names (traversal stripped, .apk/.exe neutralised with ".download"), never auto-opened.</p>
+</body></html>

@@ -1,0 +1,7 @@
+# app-ads.txt — TEMPLATE, not live. Replace pub-XXXXXXXXXXXXXXXX with your AdMob
+# publisher ID (AdMob > Settings > Account information) and serve this file at
+#   https://<developer-website-domain>/app-ads.txt
+# where <developer-website-domain> is exactly the website listed on the store pages
+# (Play Console "Website" / App Store "Marketing URL" domain). AdMob verifies it
+# after the app is published and linked; until then nothing is verified.
+google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

@@ -45,7 +45,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       return CustomScrollView(slivers: [
         SliverPadding(
           padding: EdgeInsets.symmetric(
-              horizontal: wide ? constraints.maxWidth * 0.15 : 20),
+              horizontal: wide ? constraints.maxWidth * 0.15 : 16),
           sliver: SliverList.list(children: [
             SizedBox(height: constraints.maxHeight * 0.08),
             Center(
@@ -130,6 +130,8 @@ class _SearchField extends ConsumerWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(l.searchWith(engine.name),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyLarge),
               ),
             ]),
@@ -260,7 +262,7 @@ class _Shortcuts extends ConsumerWidget {
         ),
       Wrap(
         alignment: WrapAlignment.center,
-        spacing: 8,
+        spacing: 4,
         runSpacing: 12,
         children: [
           for (final s in view.items)
@@ -307,7 +309,7 @@ class _ShortcutTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 76,
+      width: 74,
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
         onTap: onTap,
@@ -324,7 +326,7 @@ class _ShortcutTile extends StatelessWidget {
                 : ShortcutIcon(title: title, iconKey: iconKey, color: color),
             const SizedBox(height: 6),
             Text(title,
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall),

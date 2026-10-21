@@ -69,7 +69,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get backgroundAudioHint =>
-      'Only where the system and the website allow it. Some sites pause playback themselves.';
+      'Only where the system and the website\'s terms allow it (not on YouTube, where background play is a Premium feature). Some sites pause playback themselves.';
 
   @override
   String get blockAdsTrackers => 'Block ads & trackers on websites';

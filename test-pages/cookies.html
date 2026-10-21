@@ -1,0 +1,29 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cookies</title><link rel="stylesheet" href="common.css"></head><body>
+<h1>Cookies &amp; storage</h1>
+<p><b>Private isolation test:</b> 1) In a <i>normal</i> tab press "Set NORMAL". 2) Open this page in a <i>private</i> tab:
+it must show <span class="bad">no</span> normal value. Press "Set PRIVATE". 3) Back in the normal tab, reload:
+the private value must not appear. 4) Close all private tabs, open a new private tab: nothing from the previous private session.</p>
+<button onclick="setv('NORMAL')">Set NORMAL</button>
+<button onclick="setv('PRIVATE')">Set PRIVATE</button>
+<button onclick="clearAll()">Clear</button>
+<pre id="out"></pre>
+<script>
+function setv(kind){
+  const v = kind + '-' + Date.now();
+  document.cookie = 'vela_' + kind.toLowerCase() + '=' + v + '; path=/; max-age=86400; SameSite=Lax';
+  document.cookie = 'vela_test=1; path=/; max-age=86400; SameSite=Lax';
+  localStorage.setItem('vela_' + kind.toLowerCase(), v);
+  show();
+}
+function clearAll(){
+  document.cookie.split(';').forEach(c => document.cookie = c.split('=')[0].trim() + '=; path=/; max-age=0');
+  localStorage.clear(); show();
+}
+function show(){
+  document.getElementById('out').textContent =
+    'cookie: ' + (document.cookie || '(none)') + '\n' +
+    'localStorage: ' + JSON.stringify(Object.assign({}, localStorage));
+}
+show();
+</script></body></html>

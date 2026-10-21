@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../app_providers.dart';
 import '../../l10n/l10n.dart';
+import '../../media/media_policy.dart';
 import '../bookmarks/bookmarks_page.dart';
 import '../downloads/downloads_page.dart';
 import '../history/history_page.dart';
@@ -83,7 +84,10 @@ class _BrowserMenu extends ConsumerWidget {
               item(Icons.open_in_new, l.openInSystemBrowser, () async {
                 await actions.openInSystemBrowser(tab.url!);
               }),
-            if (browsing && tab.fullscreen && pip.isAndroid)
+            if (browsing &&
+                tab.fullscreen &&
+                pip.isAndroid &&
+                backgroundPlaybackAllowed(tab.url))
               item(Icons.picture_in_picture_alt_outlined, l.pictureInPicture,
                   () => ref.read(pipProvider).enter()),
             item(Icons.bookmarks_outlined, l.bookmarks,
