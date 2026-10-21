@@ -1,0 +1,273 @@
+// Vela admin + public config API — database schema.
+// Binding contract: ../../docs/CONFIG_CONTRACT.md
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  READONLY
+}
+
+enum BlockListStatus {
+  DRAFT
+  ACTIVE
+  ARCHIVED
+}
+
+enum ReportStatus {
+  NEW
+  TRIAGED
+  CLOSED
+}
+
+enum NoticeSeverity {
+  info
+  update
+}
+
+enum PlacementKey {
+  home_banner
+  downloads_banner
+  tabs_interstitial
+}
+
+enum AdFormat {
+  banner
+  interstitial
+}
+
+enum ReportCategory {
+  site_broken
+  blocking_issue
+  video_issue
+  ads_issue
+  other
+}
+
+enum Platform {
+  android
+  ios
+  unknown
+}
+
+model AdminUser {
+  id               String    @id @default(cuid())
+  email            String    @unique
+  passwordHash     String
+  role             Role      @default(READONLY)
+  disabled         Boolean   @default(false)
+  failedLoginCount Int       @default(0)
+  lockedUntil      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  lastLoginAt      DateTime?
+
+  sessions       Session[]
+  auditLogs      AuditLog[]
+  blockLists     BlockList[]
+  configReleases ConfigRelease[]
+}
+
+model Session {
+  id         String    @id @default(cuid())
+  /// SHA-256 (hex) of the opaque cookie token. The raw token is never stored.
+  tokenHash  String    @unique
+  userId     String
+  user       AdminUser @relation(fields: [userId], references: [id], onDelete: Cascade)
+  csrfToken  String
+  createdAt  DateTime  @default(now())
+  /// Absolute expiry (createdAt + 7 days).
+  expiresAt  DateTime
+  /// Idle timeout is evaluated against this (12 hours).
+  lastSeenAt DateTime  @default(now())
+  userAgent  String?
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model LoginAttempt {
+  id      String   @id @default(cuid())
+  /// Admin login client IP (admins only, never app users). Purged after 30 days.
+  ip      String
+  /// Lower-cased email as typed (may not exist).
+  email   String
+  success Boolean
+  at      DateTime @default(now())
+
+  @@index([ip, email, at])
+  @@index([at])
+}
+
+model Shortcut {
+  id          String   @id @default(cuid())
+  /// Exposed as `id` in the payload.
+  key         String   @unique
+  /// {"en": "...", "ar": "...", "de": "..."}
+  titles      Json
+  url         String
+  iconKey     String?
+  iconAssetId String?
+  iconAsset   Asset?   @relation(fields: [iconAssetId], references: [id], onDelete: SetNull)
+  color       String
+  order       Int      @default(0)
+  enabled     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+}
+
+model Asset {
+  id        String     @id @default(cuid())
+  /// Re-encoded bytes (always PNG 128x128) — never the original upload.
+  bytes     Bytes
+  mime      String
+  sha256    String     @unique
+  width     Int
+  height    Int
+  createdAt DateTime   @default(now())
+  shortcuts Shortcut[]
+}
+
+/// Singleton row (id = 1).
+model AdSettings {
+  id                         Int      @id @default(1)
+  globalEnabled              Boolean  @default(true)
+  interstitialMinIntervalSec Int      @default(600)
+  interstitialMaxPerSession  Int      @default(1)
+  updatedAt                  DateTime @updatedAt
+}
+
+model AdPlacement {
+  id              String       @id @default(cuid())
+  key             PlacementKey @unique
+  format          AdFormat
+  enabled         Boolean      @default(true)
+  adUnitIdAndroid String       @default("")
+  adUnitIdIos     String       @default("")
+  updatedAt       DateTime     @updatedAt
+}
+
+model BlockList {
+  id          String          @id @default(cuid())
+  version     Int             @unique
+  name        String
+  license     String
+  /// Exact response body served by GET /api/v1/blocklists/{version}.
+  body        String
+  /// Hex SHA-256 of the UTF-8 bytes of `body`.
+  sha256      String
+  ruleCount   Int
+  status      BlockListStatus @default(DRAFT)
+  createdById String?
+  createdBy   AdminUser?      @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime        @default(now())
+  activatedAt DateTime?
+}
+
+/// Singleton row (id = 1).
+model ContentSettings {
+  id                       Int      @id @default(1)
+  privacyUrl               String
+  termsUrl                 String
+  supportUrl               String
+  /// {"en": "...", "ar": "...", "de": "..."}
+  helpText                 Json
+  /// Payload top-level `minAppVersion` / `maxAppVersion` (contract) — stored here.
+  minAppVersion            String?
+  maxAppVersion            String?
+  /// Payload `blocking.enabledByDefault` (contract) — stored here.
+  blockingEnabledByDefault Boolean  @default(true)
+  updatedAt                DateTime @updatedAt
+}
+
+model Notice {
+  id            String         @id @default(cuid())
+  /// Exposed as `id` in the payload.
+  key           String         @unique
+  severity      NoticeSeverity @default(info)
+  /// {"en": "...", "ar": "...", "de": "..."}
+  message       Json
+  minAppVersion String?
+  maxAppVersion String?
+  active        Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model ConfigRelease {
+  id                    String     @id @default(cuid())
+  version               Int        @unique
+  /// Payload JSON without issuedAt/expiresAt (those are stamped per request).
+  contentJson           String
+  note                  String     @default("")
+  createdById           String?
+  createdBy             AdminUser? @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt             DateTime   @default(now())
+  rolledBackFromVersion Int?
+  /// At most one row has isCurrent = true (partial unique index in migration).
+  isCurrent             Boolean    @default(false)
+}
+
+model AuditLog {
+  id       String     @id @default(cuid())
+  actorId  String?
+  actor    AdminUser? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action   String
+  entity   String
+  entityId String?
+  before   Json?
+  after    Json?
+  /// Client IP of the admin performing the action (admins only, never app users).
+  ip       String?
+  at       DateTime   @default(now())
+
+  @@index([at])
+  @@index([entity, entityId])
+}
+
+model UserReport {
+  id         String         @id @default(cuid())
+  category   ReportCategory
+  message    String
+  appVersion String
+  platform   Platform
+  locale     String
+  siteHost   String?
+  status     ReportStatus   @default(NEW)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  @@index([status, createdAt])
+}
+
+model ReportRateLimit {
+  id          String   @id @default(cuid())
+  /// HMAC-SHA256(REPORT_IP_SALT, ip). Purged after 24h.
+  ipHash      String
+  windowStart DateTime
+  count       Int      @default(0)
+
+  @@unique([ipHash, windowStart])
+  @@index([windowStart])
+}
+
+/// Aggregated counter only — no IPs, no device ids.
+model DailyStat {
+  id            String   @id @default(cuid())
+  date          DateTime @db.Date
+  platform      Platform
+  configFetches Int      @default(0)
+
+  @@unique([date, platform])
+}

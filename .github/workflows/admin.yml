@@ -1,0 +1,65 @@
+name: admin
+
+on:
+  push:
+    paths: ["admin/**", "docs/CONFIG_CONTRACT.md", ".github/workflows/admin.yml"]
+  pull_request:
+    paths: ["admin/**", "docs/CONFIG_CONTRACT.md", ".github/workflows/admin.yml"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: admin-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: admin
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: vela
+          POSTGRES_PASSWORD: ci_only_password
+          POSTGRES_DB: vela
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U vela -d vela"
+          --health-interval 5s --health-timeout 5s --health-retries 20
+    env:
+      CI: "true"
+      APP_ENV: development
+      DATABASE_URL: postgresql://vela:ci_only_password@localhost:5432/vela?schema=public
+      TEST_DATABASE_URL: postgresql://vela:ci_only_password@localhost:5432/vela_test?schema=public
+      E2E_DATABASE_URL: postgresql://vela:ci_only_password@localhost:5432/vela_e2e?schema=public
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: admin/package-lock.json
+      - run: npm ci
+      - run: npx prisma migrate deploy
+      - run: npx prisma migrate diff --from-migrations prisma/migrations --to-schema-datamodel prisma/schema.prisma --shadow-database-url "postgresql://vela:ci_only_password@localhost:5432/postgres" --exit-code
+        name: Check schema has no un-migrated changes
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - run: npm audit --omit=dev
+        continue-on-error: true
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: admin/playwright-report
+          retention-days: 7

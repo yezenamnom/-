@@ -1,0 +1,307 @@
+{
+ "format": "vela-blocklist",
+ "formatVersion": 1,
+ "version": 1,
+ "name": "Vela Starter (bundled)",
+ "license": "Original work by the project owner. Hostnames are factual identifiers; no third-party list was copied.",
+ "rules": [
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?33across\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?adcolony\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?adform\\.net[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?adnxs\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?adservice\\.google\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?adsrvr\\.org[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?adsterra\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?amazon-adsystem\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?applovin\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?bidswitch\\.net[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?casalemedia\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?chartbeat\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?chartbeat\\.net[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?crazyegg\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?criteo\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?criteo\\.net[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?doubleclick\\.net[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?exoclick\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?fullstory\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?googleadservices\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?googlesyndication\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?googletagservices\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?hotjar\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?imasdk\\.googleapis\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?inmobi\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?juicyads\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?media\\.net[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?mgid\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?moatads\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?mouseflow\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?openx\\.net[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?outbrain\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?pagead2\\.googlesyndication\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?popads\\.net[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?popcash\\.net[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?propellerads\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?pubmatic\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?quantserve\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?revcontent\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?rubiconproject\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?scorecardresearch\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?sharethrough\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?smartadserver\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?taboola\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?teads\\.tv[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?trafficjunky\\.net[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?unityads\\.unity3d\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?vungle\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?yieldmo\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "block",
+   "urlFilter": "^https?://([^/]+\\.)?zemanta\\.com[/:]",
+   "resourceTypes": []
+  },
+  {
+   "action": "css-display-none",
+   "urlFilter": ".*",
+   "selector": "[id^=\"google_ads_iframe\"]",
+   "ifDomain": []
+  },
+  {
+   "action": "css-display-none",
+   "urlFilter": ".*",
+   "selector": "ins.adsbygoogle",
+   "ifDomain": []
+  },
+  {
+   "action": "css-display-none",
+   "urlFilter": ".*",
+   "selector": "[data-ad-slot]",
+   "ifDomain": []
+  },
+  {
+   "action": "css-display-none",
+   "urlFilter": ".*",
+   "selector": ".adsbygoogle",
+   "ifDomain": []
+  },
+  {
+   "action": "css-display-none",
+   "urlFilter": ".*",
+   "selector": "[id^=\"div-gpt-ad\"]",
+   "ifDomain": []
+  },
+  {
+   "action": "css-display-none",
+   "urlFilter": ".*",
+   "selector": ".ad-banner",
+   "ifDomain": []
+  },
+  {
+   "action": "css-display-none",
+   "urlFilter": ".*",
+   "selector": ".ad-container",
+   "ifDomain": []
+  },
+  {
+   "action": "css-display-none",
+   "urlFilter": ".*",
+   "selector": ".sponsored-ad",
+   "ifDomain": []
+  }
+ ]
+}

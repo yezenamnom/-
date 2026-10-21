@@ -1,0 +1,11 @@
+# Secrets and local configuration (never commit)
+.env
+.env.*
+!.env.example
+**/key.properties
+*.keystore
+*.jks
+*.p12
+*.mobileprovision
+mobile/env/*.json
+!mobile/env/*.example.json

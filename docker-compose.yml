@@ -1,0 +1,63 @@
+# Local / single-host deployment of the Vela admin server + Postgres.
+# Variables are read from admin/.env — ALWAYS pass it explicitly:
+#   docker compose --env-file admin/.env up -d --build
+# One-off tools (seed, create owner, keys):
+#   docker compose --env-file admin/.env run --rm tools npm run db:seed
+#   docker compose --env-file admin/.env run --rm tools npm run admin:create-owner -- --email you@example.com
+
+name: vela
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-vela}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in admin/.env}
+      POSTGRES_DB: ${POSTGRES_DB:-vela}
+    volumes:
+      - vela_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    # Not published to the host by default. Uncomment for local debugging only:
+    # ports: ["127.0.0.1:5433:5432"]
+
+  migrate:
+    build: { context: ./admin, target: tools }
+    env_file: ./admin/.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-vela}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-vela}?schema=public
+    command: ["npx", "prisma", "migrate", "deploy"]
+    depends_on:
+      db: { condition: service_healthy }
+    restart: "no"
+
+  admin:
+    build: { context: ./admin, target: runner }
+    restart: unless-stopped
+    env_file: ./admin/.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-vela}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-vela}?schema=public
+    ports:
+      # Bound to localhost: put a TLS reverse proxy (Caddy/nginx) in front for staging/production.
+      - "127.0.0.1:${ADMIN_PORT:-3000}:3000"
+    depends_on:
+      db: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+
+  tools:
+    build: { context: ./admin, target: tools }
+    profiles: ["tools"]
+    env_file: ./admin/.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-vela}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-vela}?schema=public
+    depends_on:
+      db: { condition: service_healthy }
+    stdin_open: true
+    tty: true
+
+volumes:
+  vela_pgdata:
