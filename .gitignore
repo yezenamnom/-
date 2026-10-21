@@ -12,3 +12,4 @@ mobile/env/*.json
 node_modules/
 tools/smoke/smoke-results.json
 mobile/test_screenshots/out/
+dist/
