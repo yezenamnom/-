@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
@@ -41,7 +41,18 @@ import 'reports/report_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Draw something immediately: on slow devices/emulators the work below can
+  // take seconds, and nothing may block the first frame (ANR risk).
+  runApp(const _Splash());
+  try {
+    runApp(await _bootstrap());
+  } on Object catch (e, st) {
+    debugPrint('Startup failed: $e\n$st');
+    runApp(_StartupError(error: e));
+  }
+}
 
+Future<Widget> _bootstrap() async {
   final isAndroid = Platform.isAndroid;
   final prefs = PrefsStore(await SharedPreferences.getInstance());
   final supportDir = await getApplicationSupportDirectory();
@@ -56,8 +67,6 @@ Future<void> main() async {
   }
 
   final privateSession = PrivateSession(isAndroid: isAndroid);
-  // Remove any private profile left over from a crash, before any WebView.
-  await privateSession.cleanupLeftovers();
 
   final settings = SettingsController(prefs);
   final config = ConfigService(
@@ -132,7 +141,7 @@ Future<void> main() async {
 
   final pip = PipService(isAndroid: isAndroid);
 
-  runApp(ProviderScope(
+  final app = ProviderScope(
     overrides: [
       settingsProvider.overrideWith((ref) => settings),
       configProvider.overrideWith((ref) => config),
@@ -153,10 +162,16 @@ Future<void> main() async {
           .overrideWithValue(ReportService(baseUrl: AppEnv.configBaseUrl)),
     ],
     child: const VelaApp(),
-  ));
+  );
 
-  // Network work happens after the first frame and never blocks browsing.
+  // Work that touches the network or initialises Android WebView runs after
+  // the UI is up and never blocks browsing.
   unawaited(() async {
+    await Future<void>.delayed(const Duration(seconds: 2));
+    // Remove private profiles left over from a crash. Loading the WebView
+    // provider for this is slow, so it is not done before the first frame;
+    // a new private session always uses a fresh profile name anyway.
+    await privateSession.cleanupLeftovers();
     await config.refresh();
     await blocking.applyConfig(config.config.blocking);
     config.addListener(
@@ -164,4 +179,47 @@ Future<void> main() async {
     await subscription.init();
     await ads.start();
   }());
+  return app;
+}
+
+class _Splash extends StatelessWidget {
+  const _Splash();
+
+  @override
+  Widget build(BuildContext context) => const ColoredBox(
+        color: Color(0xFFF4FBF9),
+        child: Center(
+          child: SizedBox(
+            width: 32,
+            height: 32,
+            child: CircularProgressIndicator(
+                strokeWidth: 3, color: Color(0xFF2E7D74)),
+          ),
+        ),
+      );
+}
+
+class _StartupError extends StatelessWidget {
+  const _StartupError({required this.error});
+  final Object error;
+
+  @override
+  Widget build(BuildContext context) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                const Icon(Icons.error_outline, size: 48),
+                const SizedBox(height: 16),
+                const Text('The app could not start. / تعذّر تشغيل التطبيق.',
+                    textAlign: TextAlign.center),
+                const SizedBox(height: 8),
+                SelectableText('$error', textAlign: TextAlign.center),
+              ]),
+            ),
+          ),
+        ),
+      );
 }

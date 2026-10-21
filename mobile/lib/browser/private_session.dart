@@ -74,11 +74,13 @@ class PrivateSession {
     }
   }
 
+  /// Deletes private profiles from earlier sessions (e.g. after a crash),
+  /// never the one an open private session is using.
   Future<void> cleanupLeftovers() async {
     if (!isAndroid) return;
     try {
-      await _channel
-          .invokeMethod<int>('deleteProfiles', {'prefix': profilePrefix});
+      await _channel.invokeMethod<int>('deleteProfiles',
+          {'prefix': profilePrefix, 'keep': _profile});
     } on PlatformException {
       // Ignore: retried next launch.
     } on MissingPluginException {

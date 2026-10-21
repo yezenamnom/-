@@ -58,6 +58,8 @@ class MainActivity : FlutterActivity() {
                 }
                 "deleteProfiles" -> {
                     val prefix = call.argument<String>("prefix") ?: ""
+                    // Profile of the private session that is currently open, if any.
+                    val keep = call.argument<String>("keep")
                     if (prefix.isEmpty() || !isMultiProfileSupported()) {
                         result.success(0)
                         return@setMethodCallHandler
@@ -65,7 +67,7 @@ class MainActivity : FlutterActivity() {
                     var deleted = 0
                     val store = ProfileStore.getInstance()
                     for (name in store.allProfileNames) {
-                        if (!name.startsWith(prefix)) continue
+                        if (!name.startsWith(prefix) || name == keep) continue
                         try {
                             if (store.deleteProfile(name)) deleted++
                         } catch (e: IllegalStateException) {
